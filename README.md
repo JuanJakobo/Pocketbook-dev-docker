@@ -7,7 +7,7 @@ Docker container to get a working compile environment.
 So now there is a Dockerfile available at \
 https://github.com/Skeeve/SDK_6.3.0/tree/docker
 
-## Use Docker to compile the SDK
+## Use Docker to build the SDK
 
 The `Dockerfile` allows you to create a docker image, containing
 the SDK 6.3.0 for your PocketBook device.
