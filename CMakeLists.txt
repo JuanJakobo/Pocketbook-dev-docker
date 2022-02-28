@@ -19,3 +19,4 @@ include_directories("${PB_INCLUDE_DIRECTORIES}")
 include_directories("${FREETYPE_INCLUDE_DIRS}")
 
 # Start you CMakeLists.txt here...
+add_executable(demo demo.cpp)
