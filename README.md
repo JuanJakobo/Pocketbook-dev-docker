@@ -48,15 +48,32 @@ docker run --rm -it \
 
 This will start a bash where you can run your compilation.
 
-Please check the `CMakeLists-SAMPLE.txt` for a boilerplate
-for your own cmake files. 
-
 ## Build your own image
 
 Run \
 `docker build -t pbdev .`
 
 This will create a docker image `pbdev` locally.
+
+## Building applications
+The provided `CMakeLists.txt` contains an example configuration
+for compiling a "Hello, World!" program.
+
+To compile it, run
+```
+cmake .
+cmake --build .
+```
+
+This will produce the `demo` executable. Place it in the `applications`
+directory of your PocketBook. Then you can launch it from the Applications menu.
+
+## Resources
+The demo program is `demo01` from [pmartin/pocketbook-demo](https://github.com/pmartin/pocketbook-demo).
+Check that repository for more examples.
+
+An old version of the inkview documentation is available at
+[pocketbook-free/InkViewDoc](https://github.com/pocketbook-free/InkViewDoc).
 
 ## Final note
 
