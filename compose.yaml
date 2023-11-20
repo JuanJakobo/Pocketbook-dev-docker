@@ -1,0 +1,10 @@
+version: '3.7'
+
+services:
+  pocketbook-dev:
+    image: pocketbook-dev
+    container_name: Pocketdev
+    volumes:
+      - ./conan2:/home/User/.conan2:rw
+      - /home/juan/Documents/Github:/project/:rw
+    tty: true
