@@ -5,13 +5,13 @@ LABEL maintainer="https://github.com/Skeeve"
 # ENV SDK_ARCH=A13
 # ENV SDK_ARCH=iMX6
 ENV SDK_ARCH=B288
-ENV SDK_BASE=/SDK
-ENV SDK_URL=https://github.com/pocketbook/SDK_6.3.0/branches/5.19/SDK-${SDK_ARCH}
+ENV GITHUB_BASE=/SDK
+ENV SDK_BASE=${GITHUB_BASE}/SDK-${SDK_ARCH}
+ENV SDK_URL=https://github.com/pocketbook/SDK_6.3.0
+ENV SDK_BRANCH=5.19
 
 ENV CMAKE_VERSION=3.27.5
 ENV CMAKE_URL=https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}
-
-ENV CMAKE_TOOLCHAIN_FILE=${SDK_BASE}/share/cmake/arm_conf.cmake
 
 VOLUME "/project"
 WORKDIR "/project"
@@ -29,12 +29,11 @@ RUN apt-get update \
     python3 \
     python3-pip \
     sudo \
- && rm -rf /var/lib/apt/lists/* \
- && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 \
- && svn export ${SDK_URL} ${SDK_BASE} \
- && ${SDK_BASE}/bin/update_path.sh \
- && chmod +x $BASEPATH/*/usr/bin/pbres \
-;
+    ccls \
+ && rm -rf /var/lib/apt/lists/*
+RUN localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 \
+ && git clone -b ${SDK_BRANCH} --single-branch ${SDK_URL} ${GITHUB_BASE} \
+ && ${SDK_BASE}/bin/update_path.sh
 
 # Get cmake
 RUN CMAKE="cmake-${CMAKE_VERSION}-linux-$( uname -m )" \
@@ -54,8 +53,8 @@ RUN groupadd --gid $USER_GID $USERNAME \
 ENV PATH="$PATH:/SDK/usr/bin"
 USER $USERNAME
 
+RUN pip3 install pyright --break-system-packages
 RUN pip3 install conan==2.0.14 --break-system-packages
-RUN echo $PATH
-ENV PATH="$PATH:/home/$USERNAME/.local/bin:/SDK/usr/bin"
+ENV PATH="$PATH:/home/$USERNAME/.local/bin:${SDK_BASE}/usr/bin"
 
 ENTRYPOINT [ "bash" ]
